@@ -21,6 +21,19 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+#### Create database
+
+```
+flask db create_all
+```
+
+#### Run development server
+
+```
+export FLASK_ENV=development
+flask run
+```
+
 ### Docker
 
 Create the docker image. This step generates the image that will be used to create the container. In addition, the application and all its dependencies are installed:
