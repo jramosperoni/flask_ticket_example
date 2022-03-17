@@ -1,24 +1,12 @@
 from datetime import datetime
 from app.db import db
+from app.utils.models import BaseModel
 
 
 class Priority:
     LOW = 0
     MEDIUM = 1
     HIGH = 2
-
-
-class BaseModel(db.Model):
-    __abstract__ = True
-    id = db.Column(db.Integer, primary_key=True)
-
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
 
 
 class Ticket(BaseModel):
