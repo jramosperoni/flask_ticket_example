@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  web:
+    build: .
+    image: 'flask-ticket'
+    container_name: 'flask-ticket-example'
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/src
+    environment:
+      FLASK_ENV: development

@@ -11,6 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Test coverage
 - Messages tests
+- Auth module
+- Login module
+
+## [0.1.2] - 2022-03-16
+
+### Added
+
 - Docker compose
 
 ## [0.1.1] - 2021-07-07
