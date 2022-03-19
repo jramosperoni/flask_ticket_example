@@ -9,7 +9,7 @@ ma = Marshmallow()
 
 def create_app(config_name=None):
     from config import config
-    from app import db, ticket
+    from app import db, auth, ticket
 
     if config_name is None:
         config_name = 'default'
@@ -20,6 +20,7 @@ def create_app(config_name=None):
     db.init_app(app)
     api.init_app(app)
     ma.init_app(app)
+    auth.init_app(api)
     ticket.init_app(api)
 
     @app.route('/')
