@@ -64,6 +64,7 @@ db.sqlite3-journal
 # Flask stuff:
 instance/
 .webassets-cache
+*.sqlite
 
 # Scrapy stuff:
 .scrapy
@@ -136,3 +137,6 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+# IDE
+.idea
