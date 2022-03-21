@@ -1,5 +1,4 @@
 from flask import request
-from flask_jwt_extended import jwt_required, current_user
 from flask_restx import Resource, abort
 from http import HTTPStatus
 from marshmallow import ValidationError
