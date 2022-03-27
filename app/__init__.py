@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 from flask_jwt_extended import JWTManager
 from flask_restx import Api
+from flask_migrate import Migrate
 from flask_marshmallow import Marshmallow
 from flask.cli import AppGroup
 from http import HTTPStatus
@@ -8,11 +9,13 @@ from http import HTTPStatus
 api = Api()
 jwt = JWTManager()
 ma = Marshmallow()
+migrate = Migrate()
 
 
 def create_app(config_name=None):
     from config import config
-    from app import db, auth, login, ticket
+    from app import auth, login, ticket
+    from app.db import db
 
     if config_name is None:
         config_name = 'default'
@@ -21,6 +24,7 @@ def create_app(config_name=None):
     app.config.from_object(config[config_name])
 
     db.init_app(app)
+    migrate.init_app(app, db)
     api.init_app(app)
     jwt.init_app(app)
     ma.init_app(app)
@@ -42,7 +46,7 @@ def create_app(config_name=None):
     def expired_token_callback(jwt_header, jwt_data):
         return jsonify({'message': 'Expired Access Token'}), HTTPStatus.UNAUTHORIZED
 
-    db_cli = AppGroup('db')
+    db_cli = AppGroup('app-db')
 
     @db_cli.command('create_all')
     def create_all():

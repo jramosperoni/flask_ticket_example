@@ -11,7 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Test coverage
 - Messages tests
+- Flask-Authorize
+
+## [0.1.4] - 2022-03-27
+
+### Added
+
 - Login module
+- Flask-Migrate
 
 ## [0.1.3] - 2022-03-17
 

@@ -24,7 +24,7 @@ pip install -r requirements.txt
 #### Create database
 
 ```
-flask db create_all
+flask app-db create_all
 ```
 
 #### Run development server
@@ -49,6 +49,27 @@ docker run -it -p 5000:5000 --rm --name flask-ticket-example flask-ticket:latest
 ```
 
 The _--rm_ option is to remove the container once its execution stops.
+
+### Docker-Compose
+
+Create the container:
+
+```
+docker-compose build
+```
+
+Once this step is ready, run the container:
+
+```
+docker-compose up
+```
+
+To create the database, connect to the container and run the migrations:
+
+```
+docker exec -it flask-ticket-example /bin/bash
+flask db upgrade
+```
 
 ### Run tests
 
