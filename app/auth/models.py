@@ -1,12 +1,21 @@
+from flask_authorize import RestrictionsMixin, AllowancesMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.db import db
 from app.utils.models import BaseModel
 
 
-class Role:
-    ADMIN = 0
-    ADVISER = 1
-    CLIENT = 2
+UserGroup = db.Table(
+    'user_group', db.Model.metadata,
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('group_id', db.Integer, db.ForeignKey('group.id'))
+)
+
+
+UserRole = db.Table(
+    'user_role', db.Model.metadata,
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('role_id', db.Integer, db.ForeignKey('role.id'))
+)
 
 
 class User(BaseModel):
@@ -14,8 +23,12 @@ class User(BaseModel):
     last_name = db.Column(db.String(50), nullable=False)
     deleted = db.Column(db.Boolean(), nullable=False, default=False)
     password_hash = db.Column(db.String(128))
-    role = db.Column(db.Integer, nullable=True, default=Role.CLIENT)
     username = db.Column(db.String(20), nullable=False, unique=True)
+
+    # `roles` and `groups` are reserved words that *must* be defined
+    # on the `User` model to use group- or role-based authorization.
+    roles = db.relationship('Role', secondary=UserRole)
+    groups = db.relationship('Group', secondary=UserGroup)
 
     @property
     def password(self):
@@ -27,3 +40,13 @@ class User(BaseModel):
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+
+class Group(db.Model, RestrictionsMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False, unique=True)
+
+
+class Role(db.Model, AllowancesMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False, unique=True)
