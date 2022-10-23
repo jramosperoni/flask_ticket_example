@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
-from flask_jwt_extended import JWTManager
+from flask_authorize import Authorize
+from flask_jwt_extended import JWTManager, current_user
 from flask_restx import Api
 from flask_migrate import Migrate
 from flask_marshmallow import Marshmallow
@@ -7,6 +8,7 @@ from flask.cli import AppGroup
 from http import HTTPStatus
 
 api = Api()
+authorize = Authorize(current_user=lambda: current_user)
 jwt = JWTManager()
 ma = Marshmallow()
 migrate = Migrate()
@@ -28,6 +30,7 @@ def create_app(config_name=None):
     api.init_app(app)
     jwt.init_app(app)
     ma.init_app(app)
+    authorize.init_app(app)
     auth.init_app(api)
     login.init_app(api)
     ticket.init_app(api)
