@@ -6,6 +6,8 @@ from flask_migrate import Migrate
 from flask_marshmallow import Marshmallow
 from flask.cli import AppGroup
 from http import HTTPStatus
+from werkzeug.exceptions import HTTPException, NotFound, Unauthorized
+
 
 api = Api()
 authorize = Authorize(current_user=lambda: current_user)
@@ -40,6 +42,34 @@ def create_app(config_name=None):
         return {
             'status': 'OK'
         }
+
+    @app.errorhandler(HTTPException)
+    def handle_exception(e):
+        return jsonify({'message': 'error'}), HTTPStatus.INTERNAL_SERVER_ERROR
+
+    @app.errorhandler(NotFound)
+    def url_not_found_handle_exception(e):
+        """Url Not Found"""
+        return jsonify({'message': 'error'}), HTTPStatus.NOT_FOUND
+
+    @api.errorhandler(NotFound)
+    def not_found_handle_exception(e):
+        """
+        Element Not Found
+        """
+        return {'message': 'error api'}, HTTPStatus.NOT_FOUND
+
+    @api.errorhandler(Unauthorized)
+    def unauthorized_handle_exception(e):
+        """
+        Permission
+        """
+        return {'message': 'error api'}, HTTPStatus.UNAUTHORIZED
+
+    @jwt.invalid_token_loader
+    def invalid_token_loader_callback(e):
+        """Header Without JWT"""
+        return jsonify({'message': e}), HTTPStatus.UNAUTHORIZED
 
     @jwt.unauthorized_loader
     def unauthorized_callback(e):
