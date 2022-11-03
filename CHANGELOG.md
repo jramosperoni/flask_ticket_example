@@ -9,8 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Test coverage
 - Messages tests
+
+### Changed
+
+- Auth tests
+
+## [0.1.5] - 2022-11-03
+
+### Added
+
+- Test coverage
 - Flask-Authorize
 
 ## [0.1.4] - 2022-03-27
