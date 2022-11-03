@@ -11,6 +11,11 @@ class Priority:
 
 
 class Ticket(BaseModel, PermissionsMixin):
+    permissions = dict(
+        owner=['read', 'update', 'delete'],
+        group=['read', 'update'],
+        other=['read', 'update', 'delete']
+    )
     subject = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(200), nullable=False)
     priority = db.Column(db.Integer, nullable=False, default=Priority.LOW)
